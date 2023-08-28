@@ -22,11 +22,11 @@ public class Producer
         this.kafkaTemplate.send(TOPIC, message);
     }
 
-    public void sendBooking(Booking booking) throws JsonProcessingException
+    public void sendBooking(BookingDetails bookingDetails) throws JsonProcessingException
     {
         ObjectMapper mapper = new ObjectMapper();
 
-        String bookingJson =  mapper.writeValueAsString(booking);
+        String bookingJson =  mapper.writeValueAsString(bookingDetails);
         sendMessage(bookingJson);
     }
 }

@@ -8,7 +8,6 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Service
 public class Consumer {
@@ -27,9 +26,9 @@ public class Consumer {
         logger.info("Consuming event");
         ObjectMapper mapper  = new ObjectMapper();
 
-        InventoryLookup inventoryLookup =  mapper.readValue(message, InventoryLookup.class);
-        Booking booking = inventoryService.getBookingData(inventoryLookup);
-        producer.sendBooking(booking);
+        BookingDetails bookingDetails =  mapper.readValue(message, BookingDetails.class);
+        inventoryService.updateBookingData(bookingDetails);
+        producer.sendBooking(bookingDetails);
 
     }
 }

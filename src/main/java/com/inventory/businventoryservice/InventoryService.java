@@ -39,30 +39,26 @@ public class InventoryService {
         return inventory;
     }
 
-    public Booking getBookingData(InventoryLookup inventoryLookup){
-        String inventoryId = inventoryLookup.getInventoryid();
-        Booking booking =  new Booking();
-        booking.setPaymentid(inventoryLookup.getPaymentid());
-        booking.setBookingid(inventoryLookup.getBookingid());
-        booking.setBusid(inventoryLookup.getBusid());
-        booking.setStatus("PENDING");
-        booking.setType(inventoryLookup.getType());
-        Optional<Inventory> inventoryOptional =inventoryRepository.findById(inventoryId);
+    public void updateBookingData(BookingDetails bookingDetails){
 
-        if(inventoryOptional.isPresent() && inventoryOptional.get()!=null){
-            Inventory inventory = inventoryOptional.get();
-            Integer updatedseats = inventory.getAvailableseats() - inventoryLookup.getNumberofseats();
-            inventory.setAvailableseats(updatedseats);
-            inventory.setLastupdated(LocalDate.now());
-            inventoryRepository.save(inventory);
-            booking.setBookingDate(inventory.getDate());
-            booking.setSeatsbooked(inventoryLookup.getNumberofseats());
-            booking.setStatus("SUCCESS");
+        if("PAYMENT_SUCCESS".equals(bookingDetails.getStatus()) && bookingDetails.getNumberofseats() >0){
+            String inventoryId = bookingDetails.getInventoryid();
+            Optional<Inventory> inventoryOptional =inventoryRepository.findById(inventoryId);
 
-        }else{
-            booking.setStatus("FAILURE");
+            if(inventoryOptional.isPresent() && inventoryOptional.get()!=null){
+                Inventory inventory = inventoryOptional.get();
+                Integer updatedseats = inventory.getAvailableseats() - bookingDetails.getNumberofseats();
+                inventory.setAvailableseats(updatedseats);
+                inventory.setLastupdated(LocalDate.now());
+                inventoryRepository.save(inventory);
+                bookingDetails.setStatus("INVENTORY_SUCCESS");
+
+            }else{
+                bookingDetails.setStatus("INVENTORY_FAILURE");
+            }
         }
-        return booking;
+
+
     }
 
 }
