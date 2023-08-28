@@ -23,8 +23,6 @@ public class BookingDetails {
 
     private String inventoryid;
 
-    private String paymentId;
-
     private String status;
 
     private String reason;
