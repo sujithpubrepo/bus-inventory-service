@@ -41,7 +41,7 @@ public class InventoryService {
 
     public void updateBookingData(BookingDetails bookingDetails){
 
-        if("PAYMENT_SUCCESS".equals(bookingDetails.getStatus()) && bookingDetails.getNumberofseats() >0){
+        if("PAYMENT_SUCCESS".equals(bookingDetails.getStatus()) && bookingDetails.getNumberofseats() !=0){
             String inventoryId = bookingDetails.getInventoryid();
             Optional<Inventory> inventoryOptional =inventoryRepository.findById(inventoryId);
 
